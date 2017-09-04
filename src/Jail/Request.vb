@@ -29,12 +29,9 @@ Public NotInheritable Class Request
         Dim values As New StringBuilder
         values.AppendLine("---------------------------------------------------------------------------------")
         For Each m As Match In New Regex("([a-z]+)(\=|\s\=\s)\""(.*)\""", RegexOptions.IgnoreCase Or RegexOptions.IgnorePatternWhitespace).Matches(Me.Permission.ToString)
-            values.AppendLine(String.Format("{0}: {1}", m.Groups(1).Value.PadRight(13, " "c), Request.Unescape(m.Groups(3).Value)))
+            values.AppendLine(String.Format("{0}: {1}", m.Groups(1).Value.PadRight(13, " "c), m.Groups(3).Value.Replace("\.", ".")))
         Next
         values.AppendLine("---------------------------------------------------------------------------------")
         Return values.ToString
-    End Function
-    Private Shared Function Unescape(str As String) As String
-        Return str.Replace("\.", ".")
     End Function
 End Class

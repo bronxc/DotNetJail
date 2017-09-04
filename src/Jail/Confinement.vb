@@ -18,9 +18,6 @@ Public NotInheritable Class Confinement
         For Each entry As Object In Collection.ToList
             If TypeOf entry Is Loaders.ByName Then
                 If (Not Me.Loader.Append(CType(entry, Loaders.ByName))) Then
-                    Dim Loader As Loaders.ByName = CType(entry, Loaders.ByName)
-                    Dim filename As String = String.Format("{0}\{1}", Me.Path, Loader.Name)
-                    File.Copy(New Uri(Loader.Name.CodeBase).LocalPath, filename, True)
                     If (Callback IsNot Nothing) Then
                         Callback.Invoke(entry, False, New IOException("Unable to load assembly"))
                     Else

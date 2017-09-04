@@ -4,7 +4,7 @@ Imports System.Security
 Imports System.Reflection
 
 Namespace Exchange
-    Public Class Proxy
+    Public NotInheritable Class Proxy
         Inherits MarshalByRefObject
         Implements IProxy
         Public Property Name As String
@@ -14,14 +14,10 @@ Namespace Exchange
             Me.Types = New Lazy(Of Object)(Function() TypeActivator.Create(Name))
         End Sub
         Public Function GetProperty(Name As String) As Object Implements IProxy.GetProperty
-
             Throw New NotImplementedException
-
         End Function
         Public Sub SetProperty(Name As String, value As Object) Implements IProxy.SetProperty
-
             Throw New NotImplementedException
-
         End Sub
         Public Function Invoke(Name As String, ParamArray Parameters As Object()) As Object Implements IProxy.Invoke
             Dim objectType As Object = Me.Types.Value

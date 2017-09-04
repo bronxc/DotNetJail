@@ -4,13 +4,12 @@ Imports System.Security
 Imports System.Security.Permissions
 
 Namespace Exchange
-    Public Class Application
+    Public NotInheritable Class Application
         Inherits MarshalByRefObject
         Implements IApp
         Public Sub Run(ParamArray Parameters() As Object)
             Try
-                '// Complex assemblies often have trouble being executed into a seperate domain
-                '// the exceptions of TypeLoad/Resource will be coming from these procedures.
+                '//TODO: Fix TypeResolveException
 
                 Call New ReflectionPermission(ReflectionPermissionFlag.RestrictedMemberAccess).Assert()
                 Dim method As MethodInfo = Me.Scan.EntryPoint
@@ -21,6 +20,8 @@ Namespace Exchange
         End Sub
         Public Sub Run(Name As String, ParamArray Parameters() As Object)
             Try
+                '//TODO: Fix TypeResolveException
+
                 Call New ReflectionPermission(ReflectionPermissionFlag.RestrictedMemberAccess).Assert()
                 Dim method As MethodInfo = Me.Scan(Name).EntryPoint
                 method.Invoke(Nothing, If(method IsNot Nothing AndAlso method.GetParameters.Length = 0, New Object() {}, Parameters))
