@@ -17,26 +17,22 @@ Public NotInheritable Class Confinement
 
         For Each entry As Object In Collection.ToList
             If TypeOf entry Is Loaders.ByName Then
-                If (Not Me.Loader.Append(CType(entry, Loaders.ByName))) Then
-                    If (Callback IsNot Nothing) Then
-                        Callback.Invoke(entry, False, New IOException("Unable to load assembly"))
-                    Else
-                        Callback.Invoke(entry, True, Nothing)
-                    End If
-                End If
-            ElseIf TypeOf entry Is Loaders.ByStream Then
-                If (Not Me.Loader.Append(CType(entry, Loaders.ByStream))) Then
-                    If (Callback IsNot Nothing) Then
-                        Callback.Invoke(entry, False, New IOException("Unable to load assembly"))
-                    Else
-                        Callback.Invoke(entry, True, Nothing)
-                    End If
-                End If
-            ElseIf TypeOf entry Is Loaders.ByFilename Then
-                Dim Loader As Loaders.ByFilename = CType(entry, Loaders.ByFilename)
-                Dim filename As String = String.Format("{0}\{1}", Me.Path, Loader.Name)
-                File.Copy(Loader.Filename, filename, True)
                 If (Callback IsNot Nothing) Then
+                    If (Not Me.Loader.Append(CType(entry, Loaders.ByName))) Then
+                        Callback.Invoke(entry, False, New IOException("Unable to load assembly"))
+                    Else
+                        Callback.Invoke(entry, True, Nothing)
+                    End If
+                ElseIf TypeOf entry Is Loaders.ByStream Then
+                    If (Not Me.Loader.Append(CType(entry, Loaders.ByStream))) Then
+                        Callback.Invoke(entry, False, New IOException("Unable to load assembly"))
+                    Else
+                        Callback.Invoke(entry, True, Nothing)
+                    End If
+                ElseIf TypeOf entry Is Loaders.ByFilename Then
+                    Dim Loader As Loaders.ByFilename = CType(entry, Loaders.ByFilename)
+                    Dim filename As String = String.Format("{0}\{1}", Me.Path, Loader.Name)
+                    File.Copy(Loader.Filename, filename, True)
                     If (Not Me.Loader.Append(New Loaders.ByFilename(filename))) Then
                         Callback.Invoke(entry, False, New IOException("Unable to load assembly"))
                     Else
